@@ -26,7 +26,9 @@
             <p id="dragText" class="text-muted">Drag and drop a file here(PDF only)</p>
             <button onclick="importData()" style="color: #fff; background: #FF0000; border: none; padding: 8px 16px">Browse Files</button> 
          </div>
-  
+         <div style="display: flex; justify-content:center">
+          <i id="status"></i>
+        </div>
           <legend class="text-danger mt-4">Personal Information</legend>
           <form>
               <div class="form-row mt-4">
@@ -172,12 +174,14 @@
                 });
                 
                 parser.on('ScanProgress',function(e){
-                    
+                  var statusEl = document.getElementById('status');
+                    statusEl.innerHTML = 'Scanning document. Please wait...'; 
                 });
 
                 parser.on('ScanComplete',function(e){
-                    // var statusEl = document.getElementById('status');
-                    // statusEl.innerHTML = 'Scan complete!';
+                    var statusEl = document.getElementById('status');
+                    statusEl.innerHTML = '';
+
                     var data = e.detail;
                     var email = data.email || '';
                     var contact = data.contact || '';
