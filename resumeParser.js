@@ -14,7 +14,6 @@ var resumeParser = function (options) {
 
   return this;
 };
-
 resumeParser.prototype.setOptions = function (options) {
   // default settings
   this.fileStream = null;
@@ -122,6 +121,7 @@ resumeParser.prototype.loadDependancy = function (callback) {
       });
       // error event
       scriptEl.addEventListener("error", (ev) => {
+        // console.log("Error on loading file", ev);
         _this.eventHandler.trigger("Error", _this.targetElement, {
           message: "Error on loading file: " + _this.includeLibraries[index],
         });
@@ -331,6 +331,8 @@ resumeParser.prototype.convertAndRunOCR = async function () {
     } = await worker.recognize(images[i]);
     _this.parsedDocumentText += text;
   }
+
+  // console.log(_this.parsedDocumentText);
   await worker.terminate();
 
   var resp = _this.response();
@@ -349,6 +351,8 @@ resumeParser.prototype.runOCR = async function () {
   await worker.terminate();
 
   _this.parsedDocumentText = text;
+
+  // console.log(_this.parsedDocumentText)
 
   var resp = _this.response();
   _this.eventHandler.trigger("ScanComplete", _this.targetElement, resp);
@@ -508,17 +512,6 @@ resumeParser.prototype.getLocation = function () {
   }
 
   navigator.geolocation.getCurrentPosition(async function (pos) {
-    // let locationCount = true;
-    let locationPresent = false;
-    let cityArr = [
-      "Bhubaneshwar",
-      "New Delhi",
-      "Bengaluru",
-      "Kolkata",
-      "Hyderabad",
-      "Mumbai",
-      "Pune",
-    ];
     var latitude = pos.coords.latitude;
     var longitude = pos.coords.longitude;
     var coordinates = new google.maps.LatLng(latitude, longitude);
@@ -534,39 +527,6 @@ resumeParser.prototype.getLocation = function () {
           locationData.country = addressArr[totalAddr - 1];
           locationData.state = addressArr[totalAddr - 2];
           locationData.city = addressArr[totalAddr - 3];
-          $("#location").empty();
-          for (let i = 0; i < cityArr.length; i++) {
-            if (cityArr[i].trim() === locationData.city.trim()) {
-              $("#location").append(
-                '<option style="background-color: white;" selected value=' +
-                  cityArr[i] +
-                  ">" +
-                  cityArr[i] +
-                  "</option>"
-              );
-              locationPresent = true;
-            } else {
-              $("#location").append(
-                '<option style="background-color: white;"  value=' +
-                  cityArr[i] +
-                  ">" +
-                  cityArr[i] +
-                  "</option>"
-              );
-            }
-          }
-
-          if (!locationPresent) {
-            document.getElementById("location").value =
-              locationData.city.trim();
-            $("#location").append(
-              '<option style="background-color: white;" selected value=' +
-                locationData.city +
-                ">" +
-                locationData.city +
-                "</option>"
-            );
-          }
         }
       }
       _this.eventHandler.trigger(

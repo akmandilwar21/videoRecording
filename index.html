@@ -191,7 +191,41 @@
                 parser.on('FoundLocation',function(e){
                     var locationData = e.detail;
                     var city = locationData.city || '';
+                    let locationPresent = false;
+                    let cityArr = ["Bhubaneshwar","New Delhi","Bengaluru","Kolkata","Hyderabad","Mumbai","Pune",];
+                    $("#location").empty();
+                    for (let i = 0; i < cityArr.length; i++) {
+                      if (cityArr[i].trim() === locationData.city.trim()) {
+                        $("#location").append(
+                          '<option style="background-color: white;" selected value=' +
+                            cityArr[i] +
+                            ">" +
+                            cityArr[i] +
+                            "</option>"
+                        );
+                        locationPresent = true;
+                      } else {
+                        $("#location").append(
+                          '<option style="background-color: white;"  value=' +
+                            cityArr[i] +
+                            ">" +
+                            cityArr[i] +
+                            "</option>"
+                        );
+                      }
+                    }
 
+                    if (!locationPresent) {
+                      document.getElementById("location").value =
+                        locationData.city.trim();
+                      $("#location").append(
+                        '<option style="background-color: white;" selected value=' +
+                          locationData.city +
+                          ">" +
+                          locationData.city +
+                          "</option>"
+                      );
+                    }
                     setValue('location',city);
                 })
                 parser.init();
