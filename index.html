@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html> 
+    <head>
+        <title>Proof-of-concept</title>
+        <script src="resumeParser.js"></script>
+    </head>
+    <body>
+        <h2>Upload a resume(Accepted Extensions: pdf/jpg/png)</h2>
+
+        <input id="resumeupload" type="file" accept="pdf,jpg,png">
+        <button id="parse" onclick="parse()">Parse File</button>
+        <br><br>
+        <i id="status"></i>
+        <br><br>
+        <h2>Below fields will be auto-populated.</h2>
+        <form action="">
+            <label for="email" style="width: 50px;">Email: </label>
+            <input type="text" id="email" value="" />
+            <br>
+            <br>
+            <label for="contact">Contact: </label>
+            <input type="text" id="contact" value="" />
+            <br>
+            <br>
+            <label for="linkedIn">LinkedIn: </label>
+            <input type="text" id="linkedIn" value="" />
+            <br>
+            <br>
+            <label for="location">Location: </label>
+            <input type="text" id="location" value="" />
+        </form>
+
+        <script>
+            function setValue(element,value){
+                var el      = document.getElementById(element);
+                el.value    = value;
+            }
+
+            function parse(){
+                var files = document.getElementById("resumeupload").files;
+                
+                if (!files.length) {
+                    return alert("Please choose a file to upload first.");
+                }
+
+                var file = files[0];
+                var fileName = file.name;
+
+                var parser	= new resumeParser({
+                                fileStream: file,
+                                checkSpecialCharInFileName: false   // default
+                            });
+                
+                parser.on('Error',function(e){
+                    var errorMsg = e.detail.message;
+                    alert(errorMsg);
+                });
+                
+                parser.on('ScanProgress',function(e){
+                    console.log('Scanning...');
+                    var statusEl = document.getElementById('status');
+                    statusEl.innerHTML = 'Scanning document. Please wait...';
+                });
+
+                parser.on('ScanComplete',function(e){
+                    console.log('Scan Complete!');
+                    var statusEl = document.getElementById('status');
+                    statusEl.innerHTML = 'Scan complete!';
+                    console.log(e.detail)
+                    var data = e.detail;
+                    var email = data.email || '';
+                    var contact = data.contact || '';
+                    var linkedIn = data.linkedIn || '';
+
+                    setValue('email',email);
+                    setValue('contact',contact);
+                    setValue('linkedIn',linkedIn);
+                });
+
+                parser.on('FoundLocation',function(e){
+                    console.log('Found Location');
+                    var locationData = e.detail;
+                    var city = locationData.city || '';
+
+                    setValue('location',city);
+                })
+                parser.init();
+            }
+        </script>
+    </body>
+</html>
