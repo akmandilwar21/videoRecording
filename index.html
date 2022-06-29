@@ -110,33 +110,22 @@
             
   
         </div>  
-
-        <!-- <h2>Upload a resume(Accepted Extensions: pdf/jpg/png)</h2>
-
-        <input id="resumeupload" type="file" accept="pdf,jpg,png">
-        <button id="parse" onclick="parse()">Parse File</button>
-        <br><br>
-        <i id="status"></i>
-        <br><br>
-        <h2>Below fields will be auto-populated.</h2>
-        <form action="">
-            <label for="email" style="width: 50px;">Email: </label>
-            <input type="text" id="email" value="" />
-            <br>
-            <br>
-            <label for="contact">Contact: </label>
-            <input type="text" id="contact" value="" />
-            <br>
-            <br>
-            <label for="linkedIn">LinkedIn: </label>
-            <input type="text" id="linkedIn" value="" />
-            <br>
-            <br>
-            <label for="location">Location: </label>
-            <input type="text" id="location" value="" />
-        </form> -->
-
         <script>
+          $('#holder').on({
+    'dragover dragenter': function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+    },
+    'drop': function parsePdf(e) {
+        var dataTransfer = e.originalEvent.dataTransfer;
+        if (dataTransfer && dataTransfer.files.length) {
+            e.preventDefault();
+            e.stopPropagation();
+            parse(dataTransfer.files);
+        }
+
+    }
+});
             function importData() {
                 let input = document.createElement('input');
                 input.type = 'file';
