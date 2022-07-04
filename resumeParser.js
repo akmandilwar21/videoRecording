@@ -462,13 +462,17 @@ resumeParser.prototype.getEmail = function () {
   var email = "";
 
   if (this.parsedDocumentText) {
-    // var parsedEmail = this.parsedDocumentText.match(/([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]{2,3})/gi);
     var parsedEmail = this.parsedDocumentText.match(
-      /([a-zA-Z]{1}[a-zA-Z0-9._-]+@(([a-zA-z]+\.[a-zA-Z]{2,3})|([a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]+)))/gi
+      // /([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]{2,3})/gi
+      /([a-zA-Z._-][\s]?[a-zA-Z0-9._-]+[\s]?@[a-zA-Z0-9._-]+[\s]?\.[a-zA-Z0-9_-]+)/gi
     );
-
+    // var parsedEmail = this.parsedDocumentText.match(
+    //   /([a-zA-Z]{1}[a-zA-Z0-9._-]+@(([a-zA-z]+\.[a-zA-Z]{2,3})|([a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]+)))/gi
+    // );
+    console.log(this.parsedDocumentText);
     if (parsedEmail !== null) {
-      email = parsedEmail[0].replace(/^[^a-zA-Z]+/, "");
+      email = parsedEmail[0].trim().replace(" ", "");
+      //email = parsedEmail[0].replace(/^[^a-zA-Z]+/, "");
     }
   }
 
