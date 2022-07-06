@@ -46,6 +46,8 @@ playButton.addEventListener("click", () => {
   const superBuffer = new Blob(recordedBlobs, { type: "video/webm" });
   recordedVideo.src = null;
   recordedVideo.srcObject = null;
+  image.style.display = "none";
+  timer.style.display = "none";
   recordedVideo.src = window.URL.createObjectURL(superBuffer);
   recordedVideo.controls = true;
   recordedVideo.play();
