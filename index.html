@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Media Recorder in Javascript</title>
+    <link rel="stylesheet" href="main.css" />
+  </head>
+  <body>
+    <div id="container">
+      <div style="display: flex; justify-content:center">
+        <div id="start" style="width: 70%; border: 2px dashed #ccc;display: flex;align-items: center; height: 140px; margin-top: 2rem" >
+          <div onclick="startVideo()" style="display: flex;width: 100%;justify-content: center;cursor: pointer; ;">
+            <div style="display: flex;align-items: center;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M16 16c0 1.104-.896 2-2 2h-12c-1.104 0-2-.896-2-2v-8c0-1.104.896-2 2-2h12c1.104 0 2 .896 2 2v8zm8-10l-6 4.223v3.554l6 4.223v-12z"/></svg>
+            </div>
+            <div style="margin-left: 2%;">
+              <p id="Text" class="text-muted">Create a Video Resume(optional)</p>
+            </div>
+          </div>
+        </div>        
+      </div>
+      <div id="myModal" class="modal">
+        <div class="modal-content">
+          <div>
+            <span class="close">&times;</span>
+              <video id="gum"  autoplay muted></video>
+              <video id="recorded" playsinline ></video>      
+              <img id="image" src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Media-record.svg/768px-Media-record.svg.png" style="width: 25px;position: absolute;left: 300px;bottom: 215px;display: none;"/>      
+              <div class="timerDisplay" id="timerDisplay">
+                00 : 00
+             </div>
+          </div>  
+          <div style="margin-top:20px">
+            <button id="record" class="btn" style="background: green;color:white" disabled>Start</button>
+            <button id="play" disabled>Preview</button>
+            <button id='upload'style="cursor: not-allowed;background:#78b878;color:#555252" class="btn">Upload</button>
+            <button id="download" class="btn-download" disabled>Download</button>
+          </div>
+        </div>
+      </div>
+      <div>
+        <span id="errorMsg"></span>
+      </div>
+    </div>
+  </body>
+  <script src="script.js"></script>
+</html>

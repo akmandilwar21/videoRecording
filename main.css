@@ -1,0 +1,110 @@
+button {
+  margin: 0 3px 10px 0;
+  padding-left: 2px;
+  padding-right: 2px;
+  width: 99px;
+}
+
+button:last-of-type {
+  margin: 0;
+}
+
+#container{
+  padding:10px;
+  z-index: 0;
+}
+#recorded{
+  display: none;
+}
+.btn{
+  padding: 8px;
+  border-radius: 4px;
+  border: none;
+  font-weight: 800;
+  font-size: 16px;
+  cursor: pointer;
+}
+.btn-download{
+  padding: 8px;
+  border-radius: 4px;
+  border: none;
+  background: #7b749c;
+  color: white;
+  font-weight: 800;
+  font-size: 16px;
+  cursor: not-allowed;
+}
+.timerDisplay{
+  position: absolute;
+  bottom: 218px;
+  left:330px;
+  color: white;
+  font-weight: 600;
+  font-size: 16px;
+  display: none;
+}
+#play{
+  padding: 8px;
+  border-radius: 4px;
+  border: none;
+  background: #d5d5a3;
+  color: #555252;
+  font-weight: 800;
+  font-size: 16px;
+  cursor: not-allowed;
+}
+
+p.borderBelow {
+  margin: 0 0 20px 0;
+  padding: 0 0 20px 0;
+}
+
+video {
+  vertical-align: top;
+}
+
+video:last-of-type {
+  margin: 0 0 20px 0;
+}
+
+video#gumVideo {
+  margin: 0 20px 20px 0;
+}
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 48px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+  margin: auto;
+  width: 69%;
+}
+
+/* The Close Button */
+.close {
+  position: absolute;
+    right: 2%;
+    top: 2%;
+  color: #ffffff;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+
