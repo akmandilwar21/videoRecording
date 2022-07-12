@@ -8,6 +8,85 @@
      <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
         <script src="resumeParser.js"></script>
     </head>
+    <style>
+      .modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 30%;
+}
+
+/* The Close Button */
+.close {
+  color: #aaaaaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  display: flex;
+  justify-content: end;
+  
+}
+#close{
+  padding: 6px;
+    border-radius: 5px;
+    background: red;
+    color: white;
+    border: none;
+    font-weight: 900;
+    margin-right: 15px;
+}
+#close:hover{
+  background: #ca0000;
+}
+#done{
+  padding: 6px;
+    border-radius: 5px;
+    background: rgb(2 167 70);
+    color: white;
+    border: none;
+    font-weight: 900;
+}
+#done:hover{
+  background: rgb(0 128 53);
+}
+.action_button{
+  cursor: pointer;
+}
+.action_button:hover{
+  font-size: 18px;
+}
+#gum,#recorded{
+  width: 100%;
+  border-radius: 8px;
+}
+#gum_video,#recorded_video{
+  width: 100%;
+  border-radius: 8px;
+  position: relative; 
+}
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+    </style>
     <body style="background: url(https://www.mindfiresolutions.com/wp-content/uploads/2021/04/background-5.jpg) center center fixed;
     background-size: cover;">
       <div style=" width: 100%;display: flex; justify-content: space-between; font-family: Nunito Sans, sans-serif; z-index: 3; height: 60px; background-color: #fff; box-shadow : 0 8px 20px 0 rgb(0 0 0 / 10%);">
@@ -21,14 +100,16 @@
       <div><a  style="position:absolute; right:40px; top: 9px; color:#fff; background: #FF0000; padding: 8px 16px" href="https://apply.mindfiresolutions.com/">Current Opening</a></div>
       </div>  
       <div style="width: 900px;" class="container mt-2">
-  
-          <div id="holder" style="width: 100%; border: 2px dashed #ccc; height: 140px; margin-top: 2rem" class="d-flex  flex-column justify-content-center align-items-center ">
-            <p id="dragText" class="text-muted">Drag Drop a file here(PDF only)</p>
-            <button onclick="importData()" style="color: #fff; background: #FF0000; border: none; padding: 8px 16px">Browse Files</button> 
-         </div>
+          <div id="drop-resume" style="display: block;">
+            <div id="holder" style="width: 100%;display: block; border: 2px dashed #ccc; height: 140px; margin-top: 2rem" class="d-flex  flex-column justify-content-center align-items-center ">
+              <p id="dragText" class="text-muted">Drag Drop a file here(PDF only)</p>
+              <button onclick="importData()" style="color: #fff; background: #FF0000; border: none; padding: 8px 16px">Browse Files</button> 
+           </div>
+          </div>
          <div style="display: flex; justify-content:center">
           <i id="status"></i>
         </div>
+        <div id="form" style="display: none;">
           <legend class="text-danger mt-4">Personal Information</legend>
           <form>
               <div class="form-row mt-4">
@@ -103,15 +184,302 @@
                   <input type="radio" class="form-check-input" name="optradio"><b>More Than One Year  </b>
                 </label>
               </div>
+              <legend class="text-danger mt-4" id="record" onMouseOver="this.style.textDecoration = 'underline'" onMouseOut="this.style.textDecoration = 'none'" style="cursor: pointer;">Record a Video Introduction</legend>
+              <div id="myModal" class="modal">
+
+                <!-- Modal content -->
+                <div class="modal-content">
+                  <div style="display: flex;justify-content: center;position: relative;">
+                    <div id="gum_video" style="display: block;">
+                      <div><video id="gum"  autoplay muted></video></div>
+                      <div style="display: flex;position: absolute;left: 3%;bottom: 4%;">
+                      <div id="record" style="display: flex;background: white;cursor: pointer;border-radius: 4px;">
+                        <div id="start-icon" style="width: 18px;display: flex;align-items: center;">
+                          <img id="image1" src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Media-record.svg/768px-Media-record.svg.png" style="width: 100%;display: block;"/>      
+                        </div>
+                        <div id="stop-icon" style="width: 16px;display: flex;align-items: center;display: none;padding:2px">
+                          <img id="image" src="https://cdn3.iconfinder.com/data/icons/music-media-6/32/Music_Media_stop_music_media_player_recording_square_video-256.png" style="width: 100%;display: block;"/>      
+                        </div>
+                        <div id="start-btn" style="font-weight: 800;font-size:11px;padding:3px;display: flex;align-items: center;margin-top: 1px;margin-right: 2px;">Start</div>
+                      </div>      
+                      <div class="timerDisplay" style="color:white;font-weight:800;position: relative;left:10%" id="timerDisplay">
+                      </div>
+                    </div>
+                    </div>
+                    <div id="stop-video" style="width: 100%;background-color: black; color:white; font-weight: 900;display: none;justify-content: space-around;height: 29.4vh;border-radius: 8px;align-items: center;">
+                        <div id="new_recording" class="action_button"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS28pRbAuyIMNeDu_H6O5izKrKnHoOFR9v2YINgvJvioGj7jU98inKYbU65BZwa1Rl0JxM&usqp=CAU" style="width:30px"/> Record Again</div>
+                        <div id="play" class="action_button"><img src="https://cdn.loom.com/assets/img/video-player/replay-7f810fdb6dac6965e5422eb5d4d9db70.svg" style="width:17px"/><span style="margin-left:5px">Watch</span> </div>
+                    </div>
+                    <div id="recorded_video" style="display: none;">
+                      <div><video id="recorded"  playsinline></video></div>
+                    </div>                    
+                  </div>
+                   
+                  <div class="form-group" style="margin-top: 1rem;">
+                    <textarea class="form-control" placeholder="Summary...." id="textarea" cols="30" rows="10"></textarea>
+                  </div>
+                  <div style="display: flex; justify-content:end">
+                      <div><button id="close">Cancel</button></div>
+                      <div><button id="done">Done</button></div>
+                  </div>
+                </div>
+              </div>
+               
               <div class="d-flex flex-row-reverse">
                 <button  class="btn btn-danger">Submit</button>
               </div>
             </form>
-            
+          </div>
   
         </div>  
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  
         <script>
-          $('#holder').on({
+          var modal = document.getElementById("myModal");
+
+// Get the button that opens the modal
+//var btn = document.getElementById("record");
+
+// Get the <span> element that closes the modal
+
+
+// When the user clicks anywhere outside of the modal, close it
+
+let mediaRecorder;
+let recordedBlobs;
+let [seconds, minutes] = [0, 0];
+let timerRef = document.querySelector(".timerDisplay");
+let int = null;
+const newRecording=document.querySelector('div#new_recording');
+const startBtn=document.querySelector("div#start-btn")
+const gumId=document.querySelector('div#gum_video');
+const stopStatus=document.querySelector('div#stop-video');
+const playAgain=document.querySelector('div#recorded_video')
+const playIcon=document.querySelector("div#start-icon");
+const stopIcon=document.querySelector("div#stop-icon");
+const recordedVideo = document.querySelector("video#recorded");
+const recordButton = document.querySelector("div#record");
+const playButton = document.querySelector("div#play");
+const closeButton = document.querySelector("button#close");
+const image = document.querySelector("img#image");
+const timer = document.querySelector("div#timerDisplay");
+const done=document.querySelector("button#done");
+const startCameraDiv = document.querySelector("legend#record");
+var modal = document.getElementById("myModal");
+var span = document.getElementsByClassName("close")[0];
+var SpeechRecognition = window.webkitSpeechRecognition;
+
+var recognition = new SpeechRecognition();
+let saveHandle;
+
+var Textbox = $("#textarea");
+var instructions = $("#instructions");
+
+var Content = "";
+
+recognition.continuous = true;
+
+recognition.onresult = function (event) {
+  var current = event.resultIndex;
+
+  var transcript = event.results[current][0].transcript;
+
+  Content += transcript;
+  console.log(Content);
+  Textbox.val(Content);
+};
+if(Content!=="") done.disabled=true;
+
+recordButton.addEventListener("click", (e) => {
+  if (startBtn.textContent === "Start") {
+    console.log("start");
+    startRecording(e);
+  } else {
+    stopRecording(e);
+  }
+});
+
+playButton.addEventListener("click", (e) => {
+  e.preventDefault();
+  document.getElementById("gum_video").style.display = "none";
+  document.getElementById("recorded_video").style.display = "block";
+  const superBuffer = new Blob(recordedBlobs, { type: "video/webm" });
+  recordedVideo.src = null;
+  recordedVideo.srcObject = null;
+  stopStatus.style.display="none";
+  
+  timer.style.display = "none";
+  recordedVideo.src = window.URL.createObjectURL(superBuffer);
+  recordedVideo.controls = true;
+  recordedVideo.play();
+});
+
+
+closeButton.addEventListener("click", (e) => {
+  e.preventDefault()
+  stream.getTracks().forEach(function (track) {
+    track.stop();
+  });
+  document.getElementById("gum_video").style.display = "none";
+  document.getElementById("recorded_video").style.display = "none";
+  modal.style.display="none"
+});
+newRecording.addEventListener('click',async(e)=>{
+  if(confirm("Your previous recording will be discarded. Do you want to proceed with new recording?") ){
+    e.preventDefault();
+  const constraints = {
+    audio: {
+      echoCancellation: { exact: true },
+    },
+    video: {
+      width: 1280,
+      height: 720,
+    },
+  };
+  console.log("Using media constraints:", constraints);
+
+  await init(constraints);
+  }
+  
+})
+function handleDataAvailable(event) {
+  console.log("handleDataAvailable", event);
+  if (event.data && event.data.size > 0) {
+    recordedBlobs.push(event.data);
+  }
+}
+
+async function startRecording(e) {
+  e.preventDefault();
+  recordedBlobs = [];
+  [seconds, minutes] = [0, 0];
+  let options = { mimeType: "video/webm;codecs=vp9,opus" };
+  timerRef.innerHTML = ` 00:00`;
+  await recognition.start();
+  
+  timer.style.display = "block";
+  // document.getElementById("timerDisplay").innerHTML.style.display = "block";
+  // document.getElementById("image").innerHTML.style.display = "block";
+  try {
+    mediaRecorder = new MediaRecorder(window.stream, options);
+    if (int !== null) {
+      clearInterval(int);
+    }
+    int = setInterval(displayTimer, 1000);
+  } catch (e) {
+    console.error("Exception while creating MediaRecorder:", e);
+    errorMsgElement.innerHTML = `Exception while creating MediaRecorder: ${JSON.stringify(
+      e
+    )}`;
+    return;
+  }
+
+  console.log("Created MediaRecorder", mediaRecorder, "with options", options);
+  startBtn.textContent = "Stop";
+  playIcon.style.display="none";
+  stopIcon.style.display="flex";
+  //recordButton.style.background = "red";
+  playButton.disabled = true;
+  mediaRecorder.onstop = (event) => {
+    console.log("Recorder stopped: ", event);
+    console.log("Recorded Blobs: ", recordedBlobs);
+  };
+  mediaRecorder.ondataavailable = handleDataAvailable;
+  mediaRecorder.start();
+  console.log("MediaRecorder started", mediaRecorder);
+}
+function displayTimer() {
+  seconds++;
+  if (seconds == 60) {
+    seconds = 0;
+    minutes++;
+  }
+  let m = minutes < 10 ? "0" + minutes : minutes;
+  let s = seconds < 10 ? "0" + seconds : seconds;
+
+  timerRef.innerHTML = ` ${m} : ${s}`;
+}
+function stopRecording(e) {
+  e.preventDefault();
+  mediaRecorder.stop();
+  gumId.style.display="none";
+  stopStatus.style.display="flex";
+  clearInterval(int);
+  recognition.stop();
+  stream.getTracks().forEach(function (track) {
+    track.stop();
+  });
+}
+
+function displayTimer() {
+  seconds++;
+  if (seconds == 60) {
+    seconds = 0;
+    minutes++;
+  }
+  let m = minutes < 10 ? "0" + minutes : minutes;
+  let s = seconds < 10 ? "0" + seconds : seconds;
+
+  timerRef.innerHTML = ` ${m} : ${s}`;
+}
+
+
+function handleSuccess(stream) {
+
+  gumId.style.display="block";
+  stopStatus.style.display="none";
+  startBtn.textContent = "Start";
+  playIcon.style.display="flex";
+  stopIcon.style.display="none";
+  Content='';
+  Textbox.val(Content);
+  timer.style.display = "none";
+  [seconds, minutes] = [0, 0];
+  mediaRecorder;
+  recordedBlobs;
+  int=null;
+
+  recordButton.disabled = false;
+  modal.style.display = "block";
+  window.stream = stream;
+  
+  const gumVideo = document.querySelector("video#gum");
+  gumVideo.style.display='block'
+  gumVideo.srcObject = stream;
+}
+
+async function init(constraints) {
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia(constraints);
+    console.log(navigator.mediaDevices.getUserMedia);
+    handleSuccess(stream);
+  } catch (e) {
+    console.error("navigator.getUserMedia error:", e);
+    errorMsgElement.innerHTML = `navigator.getUserMedia error:${e.toString()}`;
+  }
+}
+
+document.querySelector("legend#record").addEventListener("click", async () => {
+  // const hasEchoCancellation =
+  //   document.querySelector("#echoCancellation").checked;
+  const constraints = {
+    audio: {
+      echoCancellation: { exact: true },
+    },
+    video: {
+      width: 1280,
+      height: 720,
+    },
+  };
+  console.log("Using media constraints:", constraints);
+
+  await init(constraints);
+});
+
+
+
+
+$('#holder').on({
     'dragover dragenter': function (e) {
         e.preventDefault();
         e.stopPropagation();
@@ -179,6 +547,8 @@
                     setValue('email',email);
                     setValue('phone',contact);
                     setValue('linkedln',linkedIn);
+                    document.getElementById('form').style.display='block';
+                    document.getElementById('drop-resume').style.display='none';
                 });
 
                 parser.on('FoundLocation',function(e){
